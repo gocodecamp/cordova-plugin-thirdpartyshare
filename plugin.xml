@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<plugin xmlns="http://phonegap.com/ns/plugins/1.0"
+    id="cordova-plugin-thirdpartyshare"
+    version="1.0.0">
+    <engines>
+        <engine name="cordova" version=">=3.3.0" />
+    </engines>
+    
+    <name>cordova-plugin-thirdpartyshare</name>
+    <description>umsocialPlugin</description>
+    
+    <js-module src="www/umsocialPlugin.js" name="umsocialModel">
+        <clobbers target="umsocialModel" />
+    </js-module>
+    
+    <platform name="ios">
+        
+        <!-- app keys-->
+        <preference name="UM_KEY_IOS" />
+        <preference name="UM_WECHAT_KEY" />
+        <preference name="UM_WECHAT_SECRET" />
+        <preference name="UM_QQ_KEY" />
+        <preference name="UM_SINA_KEY" />
+        <preference name="UM_SINA_SECRET" />
+        <preference name="UM_SINA_REDIRECT_URL" />
+        
+        <config-file target="*-Info.plist" parent="UMAppKeys">
+            <dict>
+                <key>sinaAppSecret</key>
+                <string>$UM_SINA_SECRET</string>
+                <key>sinaAppKey</key>
+                <string>$UM_SINA_KEY</string>
+                <key>qqAppKey</key>
+                <string>$UM_QQ_KEY</string>
+                <key>wechatSessionAppSecret</key>
+                <string>$UM_WECHAT_SECRET</string>
+                <key>wechatSessionAppKey</key>
+                <string>$UM_WECHAT_KEY</string>
+                <key>appKey</key>
+                <string>$UM_KEY_IOS</string>
+                <key>sinaRedirectURL</key>
+                <string>$UM_SINA_REDIRECT_URL</string>
+            </dict>
+        </config-file>
+        
+        <!-- URLTypes-->
+        <preference name="URLTYPE_WB" />
+        <preference name="URLTYPE_WX" />
+        <preference name="URLTYPE_QQ" />
+        <preference name="URLTYPE_TX" />
+        <preference name="URLTYPE_SINA" />
+        
+        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+            <array>
+<!--                <dict>-->
+<!--                    <key>CFBundleURLName</key>-->
+<!--                    <string>cn.latatu.www</string>-->
+<!--                    <key>CFBundleURLSchemes</key>-->
+<!--                    <array>-->
+<!--                        <string>latatu</string>-->
+<!--                    </array>-->
+<!--                </dict>-->
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLIconFile</key>
+                    <string></string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$URLTYPE_WB</string>
+                    </array>
+                </dict>
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$URLTYPE_WX</string>
+                    </array>
+                </dict>
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$URLTYPE_QQ</string>
+                    </array>
+                </dict>
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$URLTYPE_TX</string>
+                    </array>
+                </dict>
+                <dict>
+                    <key>CFBundleTypeRole</key>
+                    <string>Editor</string>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>$URLTYPE_SINA</string>
+                    </array>
+                </dict>
+<!--                <dict>-->
+<!--                    <key>CFBundleTypeRole</key>-->
+<!--                    <string>Editor</string>-->
+<!--                    <key>CFBundleURLSchemes</key>-->
+<!--                    <array>-->
+<!--                        <string>BJZJNS</string>-->
+<!--                    </array>-->
+<!--                </dict>-->
+
+            </array>
+        </config-file>
+        
+        <!-- app跳转白名单-->
+        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+            <array>
+                <string>wechat</string>
+                <string>weixin</string>
+                <string>sinaweibohd</string>
+                <string>sinaweibo</string>
+                <string>sinaweibosso</string>
+                <string>weibosdk</string>
+                <string>weibosdk2.5</string>
+                <string>mqqapi</string>
+                <string>mqq</string>
+                <string>mqqOpensdkSSoLogin</string>
+                <string>mqqconnect</string>
+                <string>mqqopensdkdataline</string>
+                <string>mqqopensdkgrouptribeshare</string>
+                <string>mqqopensdkfriend</string>
+                <string>mqqopensdkapi</string>
+                <string>mqqopensdkapiV2</string>
+                <string>mqqopensdkapiV3</string>
+                <string>mqqopensdkapiV4</string>
+                <string>mqzoneopensdk</string>
+                <string>wtloginmqq</string>
+                <string>wtloginmqq2</string>
+                <string>mqqwpa</string>
+                <string>mqzone</string>
+                <string>mqzonev2</string>
+                <string>mqzoneshare</string>
+                <string>wtloginqzone</string>
+                <string>mqzonewx</string>
+                <string>mqzoneopensdkapiV2</string>
+                <string>mqzoneopensdkapi19</string>
+                <string>mqzoneopensdkapi</string>
+                <string>mqqbrowser</string>
+                <string>mttbrowser</string>
+                <string>alipay</string>
+                <string>alipayshare</string>
+                <string>dingtalk</string>
+                <string>dingtalk-open</string>
+                <string>laiwangsso</string>
+                <string>yixin</string>
+                <string>yixinopenapi</string>
+                <string>instagram</string>
+                <string>whatsapp</string>
+                <string>line</string>
+                <string>fbapi</string>
+                <string>fb-messenger-api</string>
+                <string>fbauth2</string>
+                <string>fbshareextension</string>
+                <string>kakaofa63a0b2356e923f3edd6512d531f546</string>
+                <string>kakaokompassauth</string>
+                <string>storykompassauth</string>
+                <string>kakaolink</string>
+                <string>kakaotalk-4.5.0</string>
+                <string>kakaostory-2.9.0</string>
+                <string>pinterestsdk.v1</string>
+                <string>tumblr</string>
+                <string>evernote</string>
+                <string>en</string>
+                <string>enx</string>
+                <string>evernotecid</string>
+                <string>evernotemsg</string>
+                <string>youdaonote</string>
+                <string>ynotedictfav</string>
+                <string>com.youdao.note.todayViewNote</string>
+                <string>ynotesharesdk</string>
+                <string>gplus</string>
+                <string>pocket</string>
+                <string>readitlater</string>
+                <string>pocket-oauth-v1</string>
+                <string>fb131450656879143</string>
+                <string>en-readitlater-5776</string>
+                <string>com.ideashower.ReadItLaterPro3</string>
+                <string>com.ideashower.ReadItLaterPro</string>
+                <string>com.ideashower.ReadItLaterProAlpha</string>
+                <string>com.ideashower.ReadItLaterProEnterprise</string>
+                <string>vk</string>
+                <string>vk-share</string>
+                <string>vkauthorize</string>
+            </array>
+
+                
+        </config-file>
+        
+        <!-- plugin source-->
+        <source-file src="src/ios/Plugins/ZJUMSocialPlugin.m" />
+        <header-file src="src/ios/Plugins/ZJUMSocialPlugin.h" />
+        
+        <source-file src="src/ios/Plugins/CDVAppDelegate+UMSocial.m" />
+        <header-file src="src/ios/Plugins/CDVAppDelegate+UMSocial.h" />
+
+        <header-file src="src/ios/Plugins/UMSocialDefine.h" />
+        
+        <!-- QQ frameworks and source-->
+        <source-file src="src/ios/UMSocial/SocialLibraries/QQ/libSocialQQ.a" framework="true" />
+        <framework src="src/ios/UMSocial/SocialLibraries/QQ/TencentOpenAPI.framework" custom="true" />
+        <resource-file src="src/ios/UMSocial/SocialLibraries/QQ/TencentOpenApi_IOS_Bundle.bundle" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/QQ/UMSocialQQHandler.h" />
+        
+        <!-- Sina frameworks and source-->
+        <source-file src="src/ios/UMSocial/SocialLibraries/Sina/libSocialSina.a" framework="true" />
+        <source-file src="src/ios/UMSocial/SocialLibraries/Sina/libWeiboSDK.a" framework="true" />
+        <resource-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboSDK.bundle" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/UMSocialSinaHandler.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBHttpRequest.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBHttpRequest+WeiboGame.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBHttpRequest+WeiboShare.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBHttpRequest+WeiboToken.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBHttpRequest+WeiboUser.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBSDKBasicButton.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBSDKCommentButton.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBSDKRelationshipButton.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboSDK.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboSDK+Statistics.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboUser.h" />
+        
+        <!-- Wechat frameworks and source-->
+        <source-file src="src/ios/UMSocial/SocialLibraries/WeChat/libSocialWeChat.a" framework="true" />
+        <source-file src="src/ios/UMSocial/SocialLibraries/WeChat/libWeChatSDK.a" framework="true" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/UMSocialWechatHandler.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/WechatAuthSDK.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/WXApi.h" />
+        <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/WXApiObject.h" />
+        
+        <!-- UM frameworks and source-->
+        <source-file src="src/ios/UMSocial/UMSocialSDK/libUMSocialLog.a" framework="true" />
+        <framework src="src/ios/UMSocial/UMSocialSDK/UMSocialCore.framework" custom="true" />
+        <framework src="src/ios/UMSocial/UMSocialSDK/UMSocialNetwork.framework" custom="true" />
+        <resource-file src="src/ios/UMSocial/UMSocialSDK/UMSocialSDKPromptResources.bundle" />
+        
+        <framework src="src/ios/UMSocial/UMSocialUI/UShareUI.framework" custom="true" />
+        <resource-file src="src/ios/UMSocial/UMSocialUI/UMSocialSDKResources.bundle" />
+        
+        <!-- System frameworks -->
+        <framework src="libsqlite3.tbd" weak="true" />
+        <framework src="CoreGraphics.framework" weak="true" />
+        <framework src="SystemConfiguration.framework" weak="true" />
+        <framework src="CoreTelephony.framework" weak="true" />
+        <framework src="ImageIO.framework" weak="true" />
+        <framework src="libc++.tbd" weak="true" />
+        <framework src="libz.tbd" weak="true" />
+
+<!--        <framework src="libsqlite3.tbd" />-->
+<!--        <framework src="CoreGraphics.framework" />-->
+<!--        <framework src="SystemConfiguration.framework" />-->
+<!--        <framework src="CoreTelephony.framework" />-->
+<!--        <framework src="ImageIO.framework" />-->
+<!--        <framework src="libc++.tbd" />-->
+<!--        <framework src="libz.tbd" />-->
+
+        <config-file target="config.xml" parent="/widget">
+            
+            <feature name="umsocial">
+                <param name="ios-package" value="ZJUMSocialPlugin" />
+            </feature>
+        </config-file>
+    </platform>
+</plugin>
