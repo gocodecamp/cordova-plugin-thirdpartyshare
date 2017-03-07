@@ -4,21 +4,8 @@ var exec = require("cordova/exec");
 function UmsocialModel() {};
 
 //分享网页
-UmsocialModel.prototype.shareWebPage = function (success,fail,option) {
-     exec(success, fail, 'umsocial', 'shareWebPage', option);
-};
 
-//三方登录
-UmsocialModel.prototype.loginWithPlatform = function (success,fail,option) {
-     exec(success, fail, 'umsocial', 'loginWithPlatform', option);
-};
-
-var umsocialModel = new UmsocialModel();
-module.exports = umsocialModel;
-
-//分享示例
-
-// 目前支持的平台名字: "sina", "wechatSession", "wechatTimeLine", "qq"
+//示例
 
 // platform: 平台名字
 // thumbURL: 封面图片
@@ -37,12 +24,16 @@ module.exports = umsocialModel;
 	//data一定要放到数组里面再传
 //     umsocialModel.shareWebPage(alertSuccess,alertFail,[data]);
 // }
+UmsocialModel.prototype.shareWebPage = function (success,fail,option) {
+     exec(success, fail, 'umsocial', 'shareWebPage', option);
+};
 
 
 
-//登录示例
 
-// 目前支持的平台名字: "sina", "wechatSession", "qq"
+//三方登录
+
+//示例
 
 // platform: 平台名字
 // var data = {'platform': 'sina'};
@@ -63,4 +54,55 @@ module.exports = umsocialModel;
 // "accessToken": "", //accessToken
 // "refreshToken": "", //refreshToken
 // "expiration": ""} //过期时间
+
+UmsocialModel.prototype.loginWithPlatform = function (success,fail,option) {
+     exec(success, fail, 'umsocial', 'loginWithPlatform', option);
+};
+
+
+
+
+
+//是否安装了某个社交平台
+
+//示例
+
+// platform: 平台名字
+// var data = {'platform': 'sina'};
+
+
+//  function checkSina() {
+	//data一定要放到数组里面再传
+//     umsocialModel.isInstalledPlatform(alertSuccess,alertFail,[data]);
+// }
+UmsocialModel.prototype.isInstalledPlatform = function (success,fail,option) {
+    exec(success, fail, 'umsocial', 'isInstalledPlatform', option);
+};
+
+
+var umsocialModel = new UmsocialModel();
+module.exports = umsocialModel;
+
+  // 目前支持的平台名字: "sina", "wechatSession", "wechatTimeLine", "qq"
+
+
+//分享或登录失败时返回的错误码
+ // 2000            // 未知错误
+ // 2001            // 不支持（url scheme 没配置，或者没有配置-ObjC， 或则SDK版本不支持或则客户端版本不支持）
+ // 2002            // 授权失败
+ // 2003            // 分享失败
+ // 2004  			// 请求用户信息失败
+ // 2005            // 分享内容为空
+ // 2006       	    // 分享内容不支持
+ // 2007            // schemaurl fail
+ // 2008            // 应用未安装
+ // 2009            // 取消操作
+ // 2010            // 网络异常
+ // 2011            // 第三方错   
+ // 2013   			// 对应的UMSocialPlatformProvider的方法没有实现
+ // 2014   			// 没有用https的请求,@see UMSocialGlobal isUsingHttpsWhenShareContent
+
+
+
+
 

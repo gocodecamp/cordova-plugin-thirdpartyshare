@@ -18,6 +18,35 @@
 
 @implementation ZJUMSocialPlugin
 
+
+-(void)isInstalledPlatform:(CDVInvokedUrlCommand *)command {
+    self.callbackId = command.callbackId;
+    if (command.arguments.count>0) {
+        //customize argument
+        NSDictionary* dict = command.arguments[0];
+        NSString *platformString = dict[@"platform"];
+        
+        UMSocialPlatformType platformType = [self platformTypeWithString:platformString];
+        
+        if (platformType == -1 || (platformType != UMSocialPlatformType_QQ && platformType != UMSocialPlatformType_Sina && platformType != UMSocialPlatformType_WechatSession && platformType != UMSocialPlatformType_WechatTimeLine)) {
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"平台名字错误"];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }else{
+            BOOL isInstalled = [[UMSocialManager defaultManager] isInstall:platformType];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isInstalled];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+        }
+        
+        
+    }else{
+        //callback
+        CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"没有参数"];
+        [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    }
+}
+
+
+
 -(void)loginWithPlatform:(CDVInvokedUrlCommand *)command {
     
     self.callbackId = command.callbackId;
@@ -28,7 +57,7 @@
         
         UMSocialPlatformType platformType = [self platformTypeWithString:platformString];
         
-        if (platformType == -1 || (platformType != UMSocialPlatformType_QQ && platformType != UMSocialPlatformType_Sina && platformType != UMSocialPlatformType_WechatSession)) {
+        if (platformType == -1 || (platformType != UMSocialPlatformType_QQ && platformType != UMSocialPlatformType_Sina && platformType != UMSocialPlatformType_WechatSession && platformType != UMSocialPlatformType_WechatTimeLine)) {
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"平台名字错误"];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }else{
@@ -42,7 +71,7 @@
         CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"没有参数"];
         [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
     }
-
+    
     
 }
 
@@ -94,9 +123,9 @@
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         
         if (error) {
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"分享失败"];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsNSInteger:error.code];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
-
+            
         }else{
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"分享成功"];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
@@ -117,7 +146,7 @@
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:mDict];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
         }else {
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"登录失败"];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsNSInteger:error.code];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
         }
         
@@ -174,7 +203,7 @@
             value = [NSString stringWithFormat:@"%f", [date timeIntervalSince1970]];
         }
         if (value != nil) {
-
+            
             [mDict setObject:value forKey:key];
         }
     }
