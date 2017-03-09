@@ -1,35 +1,3 @@
-//package com.bjzjns.cordovaplugin;
-//
-//import org.apache.cordova.CallbackContext;
-//import org.apache.cordova.CordovaPlugin;
-//import org.json.JSONArray;
-//import org.json.JSONException;
-//
-///**
-// * This class echoes a string called from JavaScript.
-// */
-//public class umsocial extends CordovaPlugin {
-//
-//    @Override
-//    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-//        if (action.equals("coolMethod")) {
-//            String message = args.getString(0);
-//            this.coolMethod(message, callbackContext);
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private void coolMethod(String message, CallbackContext callbackContext) {
-//        if (message != null && message.length() > 0) {
-//            callbackContext.success(message);
-//        } else {
-//            callbackContext.error("Expected one non-empty string argument.");
-//        }
-//    }
-//}
-
-
 package com.bjzjns.cordovaplugin;
 
 import android.app.Activity;
@@ -58,15 +26,15 @@ import org.json.JSONObject;
 import java.util.Map;
 
 
-public class umsocial extends CordovaPlugin {
+public class UmengSocialPlugin extends CordovaPlugin {
 
-    public static final String TAG = umsocial.class.getSimpleName();
+    public static final String TAG = UmengSocialPlugin.class.getSimpleName();
     private Activity mActivity;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         this.mActivity = cordova.getActivity();
-        Config.DEBUG = true;          //Debug模式
+        Config.DEBUG = true;           //Debug模式
         Config.isJumptoAppStore = true; // 其中qq 微信会跳转到下载界面进行下载，其他应用会跳到应用商店进行下载
 
         String wechatId = preferences.getString("WECHAT_ID", "");
@@ -83,6 +51,7 @@ public class umsocial extends CordovaPlugin {
 
         UMShareAPI.get(mActivity);
     }
+
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -124,7 +93,7 @@ public class umsocial extends CordovaPlugin {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        cordova.setActivityResultCallback(umsocial.this);
+                        cordova.setActivityResultCallback(UmengSocialPlugin.this);
                         UMShareAPI.get(mActivity).getPlatformInfo(mActivity, share_media, new UMAuthListener() {
                             @Override
                             public void onStart(SHARE_MEDIA platform) {
@@ -222,7 +191,7 @@ public class umsocial extends CordovaPlugin {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        cordova.setActivityResultCallback(umsocial.this);
+                        cordova.setActivityResultCallback(UmengSocialPlugin.this);
                         new ShareAction(mActivity).setPlatform(share_media)
                                 .withMedia(web)
                                 .setCallback(new UMShareListener() {
@@ -306,7 +275,7 @@ public class umsocial extends CordovaPlugin {
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        cordova.setActivityResultCallback(umsocial.this);
+                        cordova.setActivityResultCallback(UmengSocialPlugin.this);
                         callbackContext.success(UMShareAPI.get(mActivity).isInstall(mActivity, share_media) ? "1" : "0");
                     }
                 });
@@ -350,6 +319,7 @@ public class umsocial extends CordovaPlugin {
         Log.e(TAG, "onActivityResult" + "requestCode=" + requestCode + "resultCode=" + resultCode);
         UMShareAPI.get(mActivity).onActivityResult(requestCode, resultCode, data);
     }
+
 
     @Override
     public void onDestroy() {
