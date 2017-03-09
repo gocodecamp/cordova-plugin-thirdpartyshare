@@ -3,6 +3,8 @@ var exec = require("cordova/exec");
 
 function UmsocialModel() {};
 
+    // 目前支持的平台名字: "sina", "wechatSession", "wechatTimeLine", "qq"
+
 //分享网页
 
 //示例
@@ -60,9 +62,6 @@ UmsocialModel.prototype.loginWithPlatform = function (success,fail,option) {
 };
 
 
-
-
-
 //是否安装了某个社交平台
 
 //示例
@@ -79,11 +78,9 @@ UmsocialModel.prototype.isInstalledPlatform = function (success,fail,option) {
     exec(success, fail, 'umsocial', 'isInstalledPlatform', option);
 };
 
-
 var umsocialModel = new UmsocialModel();
 module.exports = umsocialModel;
 
-  // 目前支持的平台名字: "sina", "wechatSession", "wechatTimeLine", "qq"
 
 
 //分享或登录失败时返回的错误码
@@ -96,7 +93,7 @@ module.exports = umsocialModel;
  // 2006       	    // 分享内容不支持
  // 2007            // schemaurl fail
  // 2008            // 应用未安装
- // 2009            // 取消操作
+ // 2009            // 用户取消操作
  // 2010            // 网络异常
  // 2011            // 第三方错   
  // 2013   			// 对应的UMSocialPlatformProvider的方法没有实现

@@ -32,8 +32,8 @@
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"平台名字错误"];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
         }else{
-            BOOL isInstalled = [[UMSocialManager defaultManager] isInstall:platformType];
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:isInstalled];
+            NSString *isInstalled = [[UMSocialManager defaultManager] isInstall:platformType] ? @"1" : @"0";
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:isInstalled];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
         }
         
@@ -123,11 +123,13 @@
     [[UMSocialManager defaultManager] shareToPlatform:platformType messageObject:messageObject currentViewController:self completion:^(id data, NSError *error) {
         
         if (error) {
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsNSInteger:error.code];
+            
+            
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{@"status": [NSNumber numberWithInteger:error.code], @"message": error.userInfo[@"message"]}];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
             
         }else{
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"分享成功"];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"成功"];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
         }
         
@@ -146,7 +148,7 @@
             CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:mDict];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
         }else {
-            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsNSInteger:error.code];
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:@{@"status": [NSNumber numberWithInteger:error.code], @"message": error.userInfo[@"message"]}];
             [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
         }
         
