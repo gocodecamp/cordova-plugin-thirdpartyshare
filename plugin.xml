@@ -1,30 +1,138 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<plugin xmlns="http://phonegap.com/ns/plugins/1.0"
-    id="cordova-plugin-thirdpartyshare"
-    version="1.0.0">
+<?xml version='1.0' encoding='utf-8'?>
+<plugin xmlns:android="http://schemas.android.com/apk/res/android"
+    id="cordova-plugin-thirdpartyshare" version="1.0.0" xmlns="http://phonegap.com/ns/plugins/1.0">
     <engines>
-        <engine name="cordova" version=">=3.3.0" />
+        <engine name="cordova" version="&gt;=3.3.0" />
     </engines>
-    
-    <name>cordova-plugin-thirdpartyshare</name>
+    <name>Thirdpartyshare</name>
     <description>umsocialPlugin</description>
-    
-    <js-module src="www/umsocialPlugin.js" name="umsocialModel">
+    <js-module name="umsocialModel" src="www/umsocialPlugin.js">
         <clobbers target="umsocialModel" />
     </js-module>
-    
+
+    <platform name="android">
+        <preference name="ANDROID_UMENG_APPKEY" />
+        <preference name="ANDROID_TENCENT_SCHEME" />
+        <preference name="ANDROID_WECHAT_ID" />
+        <preference name="ANDROID_WECHAT_SECRET" />
+        <preference name="ANDROID_WEIBO_KEY" />
+        <preference name="ANDROID_WEIBO_SECRET" />
+        <preference name="ANDROID_WEIBO_REDIRECT_URL" />
+        <preference name="ANDROID_QQ_ID" />
+        <preference name="ANDROID_QQ_KEY" />
+
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="Thirdpartyshare">
+                <param name="android-package" value="com.bjzjns.cordovaplugin.umsocial" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="res/xml/config.xml">
+            <preference name="WECHAT_ID" value="$ANDROID_WECHAT_ID" />
+            <preference name="WECHAT_SECRET" value="$ANDROID_WECHAT_SECRET" />
+            <preference name="WEIBO_KEY" value="$ANDROID_WEIBO_KEY" />
+            <preference name="WEIBO_SECRET" value="$ANDROID_WEIBO_SECRET" />
+            <preference name="WEIBO_REDIRECT_URL" value="$ANDROID_WEIBO_REDIRECT_URL" />
+            <preference name="QQ_ID" value="$ANDROID_QQ_ID" />
+            <preference name="QQ_KEY" value="$ANDROID_QQ_KEY" />
+        </config-file>
+
+        <config-file parent="/*" target="AndroidManifest.xml">
+
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+            <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+
+        </config-file>
+
+
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <!--<meta-data android:name="UMENG_APPKEY" android:value="56c559e1e0f55ad52e001e6f" />-->
+            <meta-data android:name="UMENG_APPKEY" android:value="$ANDROID_UMENG_APPKEY" />
+
+            <activity android:name=".wxapi.WXEntryActivity"
+                android:configChanges="keyboardHidden|orientation|screenSize"
+                android:exported="true" android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            <activity android:name="com.tencent.tauth.AuthActivity" android:launchMode="singleTask"
+                android:noHistory="true">
+                <intent-filter>
+                    <action android:name="android.intent.action.VIEW" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                    <category android:name="android.intent.category.BROWSABLE" />
+                    <data android:scheme="$ANDROID_TENCENT_SCHEME" />
+                    <!--<data android:scheme="tencent1105133973" />-->
+                </intent-filter>
+            </activity>
+            <activity android:name="com.tencent.connect.common.AssistActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:screenOrientation="portrait"
+                android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            <activity android:name=".WBShareActivity"
+                android:configChanges="keyboardHidden|orientation"
+                android:screenOrientation="portrait">
+                <intent-filter>
+                    <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                    <category android:name="android.intent.category.DEFAULT" />
+                </intent-filter>
+            </activity>
+
+        </config-file>
+
+
+        <source-file src="src/android/umsocial.java" target-dir="src/com/bjzjns/cordovaplugin/" />
+        <source-file src="src/android/src/wxapi/WXEntryActivity.java"
+            target-dir="src/com/bjzjns/styleme/wxapi" />
+        <source-file src="src/android/src/WBShareActivity.java"
+            target-dir="src/com/bjzjns/styleme" />
+        <source-file src="src/android/libs/open_sdk_r5781.jar" target-dir="libs" />
+        <source-file src="src/android/libs/SocialSDK_QQ_Full.jar" target-dir="libs" />
+        <source-file src="src/android/libs/SocialSDK_Sina_Full.jar" target-dir="libs" />
+        <source-file src="src/android/libs/SocialSDK_WeiXin_Full.jar" target-dir="libs" />
+        <source-file src="src/android/libs/umeng_social_api.jar" target-dir="libs" />
+        <source-file src="src/android/libs/umeng_social_net.jar" target-dir="libs" />
+        <source-file src="src/android/libs/umeng_social_tool.jar" target-dir="libs" />
+        <source-file src="src/android/libs/wechat-sdk-android-with-mta-1.0.2.jar"
+            target-dir="libs" />
+        <source-file src="src/android/libs/weiboSDKCore_3.1.4.jar" target-dir="libs" />
+        <source-file src="src/android/jniLibs/arm64-v8a/libweibosdkcore.so"
+            target-dir="libs/arm64-v8a" />
+        <source-file src="src/android/jniLibs/armeabi/libweibosdkcore.so"
+            target-dir="libs/armeabi" />
+        <source-file src="src/android/jniLibs/armeabi-v7a/libweibosdkcore.so"
+            target-dir="libs/armeabi-v7a" />
+        <source-file src="src/android/jniLibs/mips/libweibosdkcore.so" target-dir="libs/mips" />
+        <source-file src="src/android/jniLibs/mips64/libweibosdkcore.so" target-dir="libs/mips64" />
+        <source-file src="src/android/jniLibs/x86/libweibosdkcore.so" target-dir="libs/x86" />
+        <source-file src="src/android/jniLibs/x86_64/libweibosdkcore.so" target-dir="libs/x86_64" />
+
+        <resource-file src="src/android/res/drawable" target="res/drawable" />
+        <resource-file src="src/android/res/layout" target="res/layout" />
+        <resource-file src="src/android/res/layout-sw550dp-large"
+            target="res/layout-sw550dp-large" />
+        <resource-file src="src/android/res/values/umeng_socialize_colors.xml"
+            target="res/values" />
+        <resource-file src="src/android/res/values/umeng_socialize_strings.xml"
+            target="res/values" />
+        <resource-file src="src/android/res/values/umeng_socialize_style.xml" target="res/values" />
+
+    </platform>
+
+
     <platform name="ios">
-        
-        <!-- app keys-->
-        <preference name="UM_KEY_IOS" />
-        <preference name="UM_WECHAT_KEY" />
-        <preference name="UM_WECHAT_SECRET" />
-        <preference name="UM_QQ_KEY" />
-        <preference name="UM_SINA_KEY" />
-        <preference name="UM_SINA_SECRET" />
-        <preference name="UM_SINA_REDIRECT_URL" />
-        
-        <config-file target="*-Info.plist" parent="UMAppKeys">
+        <!--   <preference name="UM_KEY_IOS" />
+          <preference name="UM_WECHAT_KEY" />
+          <preference name="UM_WECHAT_SECRET" />
+          <preference name="UM_QQ_KEY" />
+          <preference name="UM_SINA_KEY" />
+          <preference name="UM_SINA_SECRET" />
+          <preference name="UM_SINA_REDIRECT_URL" /> -->
+        <config-file parent="UMAppKeys" target="*-Info.plist">
             <dict>
                 <key>sinaAppSecret</key>
                 <string>$UM_SINA_SECRET</string>
@@ -42,29 +150,18 @@
                 <string>$UM_SINA_REDIRECT_URL</string>
             </dict>
         </config-file>
-        
-        <!-- URLTypes-->
         <preference name="URLTYPE_WB" />
         <preference name="URLTYPE_WX" />
         <preference name="URLTYPE_QQ" />
         <preference name="URLTYPE_TX" />
         <preference name="URLTYPE_SINA" />
-        
-        <config-file target="*-Info.plist" parent="CFBundleURLTypes">
+        <config-file parent="CFBundleURLTypes" target="*-Info.plist">
             <array>
-<!--                <dict>-->
-<!--                    <key>CFBundleURLName</key>-->
-<!--                    <string>cn.latatu.www</string>-->
-<!--                    <key>CFBundleURLSchemes</key>-->
-<!--                    <array>-->
-<!--                        <string>latatu</string>-->
-<!--                    </array>-->
-<!--                </dict>-->
                 <dict>
                     <key>CFBundleTypeRole</key>
                     <string>Editor</string>
                     <key>CFBundleURLIconFile</key>
-                    <string></string>
+                    <string />
                     <key>CFBundleURLSchemes</key>
                     <array>
                         <string>$URLTYPE_WB</string>
@@ -102,20 +199,9 @@
                         <string>$URLTYPE_SINA</string>
                     </array>
                 </dict>
-<!--                <dict>-->
-<!--                    <key>CFBundleTypeRole</key>-->
-<!--                    <string>Editor</string>-->
-<!--                    <key>CFBundleURLSchemes</key>-->
-<!--                    <array>-->
-<!--                        <string>BJZJNS</string>-->
-<!--                    </array>-->
-<!--                </dict>-->
-
             </array>
         </config-file>
-        
-        <!-- app跳转白名单-->
-        <config-file target="*-Info.plist" parent="LSApplicationQueriesSchemes">
+        <config-file parent="LSApplicationQueriesSchemes" target="*-Info.plist">
             <array>
                 <string>wechat</string>
                 <string>weixin</string>
@@ -194,28 +280,19 @@
                 <string>vk-share</string>
                 <string>vkauthorize</string>
             </array>
-
-                
         </config-file>
-        
-        <!-- plugin source-->
         <source-file src="src/ios/Plugins/ZJUMSocialPlugin.m" />
         <header-file src="src/ios/Plugins/ZJUMSocialPlugin.h" />
-        
         <source-file src="src/ios/Plugins/CDVAppDelegate+UMSocial.m" />
         <header-file src="src/ios/Plugins/CDVAppDelegate+UMSocial.h" />
-
         <header-file src="src/ios/Plugins/UMSocialDefine.h" />
-        
-        <!-- QQ frameworks and source-->
-        <source-file src="src/ios/UMSocial/SocialLibraries/QQ/libSocialQQ.a" framework="true" />
-        <framework src="src/ios/UMSocial/SocialLibraries/QQ/TencentOpenAPI.framework" custom="true" />
+        <source-file framework="true" src="src/ios/UMSocial/SocialLibraries/QQ/libSocialQQ.a" />
+        <framework custom="true"
+            src="src/ios/UMSocial/SocialLibraries/QQ/TencentOpenAPI.framework" />
         <resource-file src="src/ios/UMSocial/SocialLibraries/QQ/TencentOpenApi_IOS_Bundle.bundle" />
         <header-file src="src/ios/UMSocial/SocialLibraries/QQ/UMSocialQQHandler.h" />
-        
-        <!-- Sina frameworks and source-->
-        <source-file src="src/ios/UMSocial/SocialLibraries/Sina/libSocialSina.a" framework="true" />
-        <source-file src="src/ios/UMSocial/SocialLibraries/Sina/libWeiboSDK.a" framework="true" />
+        <source-file framework="true" src="src/ios/UMSocial/SocialLibraries/Sina/libSocialSina.a" />
+        <source-file framework="true" src="src/ios/UMSocial/SocialLibraries/Sina/libWeiboSDK.a" />
         <resource-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboSDK.bundle" />
         <header-file src="src/ios/UMSocial/SocialLibraries/Sina/UMSocialSinaHandler.h" />
         <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WBHttpRequest.h" />
@@ -229,25 +306,20 @@
         <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboSDK.h" />
         <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboSDK+Statistics.h" />
         <header-file src="src/ios/UMSocial/SocialLibraries/Sina/WeiboUser.h" />
-        
-        <!-- Wechat frameworks and source-->
-        <source-file src="src/ios/UMSocial/SocialLibraries/WeChat/libSocialWeChat.a" framework="true" />
-        <source-file src="src/ios/UMSocial/SocialLibraries/WeChat/libWeChatSDK.a" framework="true" />
+        <source-file framework="true"
+            src="src/ios/UMSocial/SocialLibraries/WeChat/libSocialWeChat.a" />
+        <source-file framework="true"
+            src="src/ios/UMSocial/SocialLibraries/WeChat/libWeChatSDK.a" />
         <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/UMSocialWechatHandler.h" />
         <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/WechatAuthSDK.h" />
         <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/WXApi.h" />
         <header-file src="src/ios/UMSocial/SocialLibraries/WeChat/WXApiObject.h" />
-        
-        <!-- UM frameworks and source-->
-        <source-file src="src/ios/UMSocial/UMSocialSDK/libUMSocialLog.a" framework="true" />
-        <framework src="src/ios/UMSocial/UMSocialSDK/UMSocialCore.framework" custom="true" />
-        <framework src="src/ios/UMSocial/UMSocialSDK/UMSocialNetwork.framework" custom="true" />
+        <source-file framework="true" src="src/ios/UMSocial/UMSocialSDK/libUMSocialLog.a" />
+        <framework custom="true" src="src/ios/UMSocial/UMSocialSDK/UMSocialCore.framework" />
+        <framework custom="true" src="src/ios/UMSocial/UMSocialSDK/UMSocialNetwork.framework" />
         <resource-file src="src/ios/UMSocial/UMSocialSDK/UMSocialSDKPromptResources.bundle" />
-        
-        <framework src="src/ios/UMSocial/UMSocialUI/UShareUI.framework" custom="true" />
+        <framework custom="true" src="src/ios/UMSocial/UMSocialUI/UShareUI.framework" />
         <resource-file src="src/ios/UMSocial/UMSocialUI/UMSocialSDKResources.bundle" />
-        
-        <!-- System frameworks -->
         <framework src="libsqlite3.tbd" weak="true" />
         <framework src="CoreGraphics.framework" weak="true" />
         <framework src="SystemConfiguration.framework" weak="true" />
@@ -255,20 +327,11 @@
         <framework src="ImageIO.framework" weak="true" />
         <framework src="libc++.tbd" weak="true" />
         <framework src="libz.tbd" weak="true" />
-
-<!--        <framework src="libsqlite3.tbd" />-->
-<!--        <framework src="CoreGraphics.framework" />-->
-<!--        <framework src="SystemConfiguration.framework" />-->
-<!--        <framework src="CoreTelephony.framework" />-->
-<!--        <framework src="ImageIO.framework" />-->
-<!--        <framework src="libc++.tbd" />-->
-<!--        <framework src="libz.tbd" />-->
-
-        <config-file target="config.xml" parent="/widget">
-            
+        <config-file parent="/widget" target="config.xml">
             <feature name="umsocial">
                 <param name="ios-package" value="ZJUMSocialPlugin" />
             </feature>
         </config-file>
     </platform>
+
 </plugin>
