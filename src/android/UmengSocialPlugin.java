@@ -90,59 +90,67 @@ public class UmengSocialPlugin extends CordovaPlugin {
                     callbackContext.error("平台名字错误");
                     return;
                 }
+
+
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         cordova.setActivityResultCallback(UmengSocialPlugin.this);
-                        UMShareAPI.get(mActivity).getPlatformInfo(mActivity, share_media, new UMAuthListener() {
-                            @Override
-                            public void onStart(SHARE_MEDIA platform) {
-                                Log.e(TAG, "platform" + platform + "登录开始!");
-                            }
+                        if (UMShareAPI.get(mActivity).isInstall(mActivity, share_media)) {
 
-                            @Override
-                            public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
-                                JSONObject infoJSON = new JSONObject();
-                                for (String key : data.keySet()) {
+                            UMShareAPI.get(mActivity).getPlatformInfo(mActivity, share_media, new UMAuthListener() {
+                                @Override
+                                public void onStart(SHARE_MEDIA platform) {
+                                    Log.e(TAG, "platform" + platform + "登录开始!");
+                                }
+
+                                @Override
+                                public void onComplete(SHARE_MEDIA platform, int action, Map<String, String> data) {
+                                    JSONObject infoJSON = new JSONObject();
+                                    for (String key : data.keySet()) {
+                                        try {
+                                            infoJSON.put(key, data.get(key));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            callbackContext.error(e.toString());
+                                        }
+                                    }
+                                    callbackContext.success(infoJSON);
+                                    Log.e(TAG, "platform" + platform + "成功");
+                                }
+
+                                @Override
+                                public void onError(SHARE_MEDIA platform, int action, Throwable t) {
+                                    Log.e(TAG, "platform" + platform + "登录错误" + t.getMessage());
+                                    JSONObject errorJSONObject = new JSONObject();
                                     try {
-                                        infoJSON.put(key, data.get(key));
+                                        errorJSONObject.put("status", "失败");
+                                        errorJSONObject.put("msg", t.getMessage());
+                                        callbackContext.error(errorJSONObject);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        callbackContext.error(e.toString());
+                                        callbackContext.error(e.getMessage());
                                     }
                                 }
-                                callbackContext.success(infoJSON);
-                                Log.e(TAG, "platform" + platform + "成功");
-                            }
 
-                            @Override
-                            public void onError(SHARE_MEDIA platform, int action, Throwable t) {
-                                Log.e(TAG, "platform" + platform + "登录错误" + t.getMessage());
-                                JSONObject errorJSONObject = new JSONObject();
-                                try {
-                                    errorJSONObject.put("status", "失败");
-                                    errorJSONObject.put("msg", t.getMessage());
-                                    callbackContext.error(errorJSONObject);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    callbackContext.error(e.getMessage());
+                                @Override
+                                public void onCancel(SHARE_MEDIA platform, int action) {
+                                    Log.e(TAG, "取消");
+                                    JSONObject errorJSONObject = new JSONObject();
+                                    try {
+                                        errorJSONObject.put("status", "失败");
+                                        errorJSONObject.put("msg", "用户取消");
+                                        callbackContext.error(errorJSONObject);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        callbackContext.error(e.getMessage());
+                                    }
                                 }
-                            }
+                            });
+                        } else {
+                            callbackContext.error("应用未安装");
+                        }
 
-                            @Override
-                            public void onCancel(SHARE_MEDIA platform, int action) {
-                                Log.e(TAG, "取消");
-                                JSONObject errorJSONObject = new JSONObject();
-                                try {
-                                    errorJSONObject.put("status", "失败");
-                                    errorJSONObject.put("msg", "用户取消");
-                                    callbackContext.error(errorJSONObject);
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                    callbackContext.error(e.getMessage());
-                                }
-                            }
-                        });
                     }
                 });
             } catch (Exception e) {
@@ -192,54 +200,57 @@ public class UmengSocialPlugin extends CordovaPlugin {
                     @Override
                     public void run() {
                         cordova.setActivityResultCallback(UmengSocialPlugin.this);
-                        new ShareAction(mActivity).setPlatform(share_media)
-                                .withMedia(web)
-                                .setCallback(new UMShareListener() {
-                                    @Override
-                                    public void onStart(SHARE_MEDIA platform) {
-                                        Log.e(TAG, "platform" + platform + "onStart！");
-                                    }
-
-                                    @Override
-                                    public void onResult(SHARE_MEDIA platform) {
-                                        Log.e(TAG, "platform" + platform + "onResult！");
-                                        callbackContext.success("成功");
-                                    }
-
-                                    @Override
-                                    public void onError(SHARE_MEDIA platform, Throwable t) {
-                                        Log.e(TAG, "platform" + platform + "onError！");
-                                        if (t != null) {
-                                            Log.d("throw", "throw:" + t.getMessage());
-                                        }
-                                        JSONObject errorJSONObject = new JSONObject();
-                                        try {
-                                            errorJSONObject.put("status", "失败");
-                                            errorJSONObject.put("msg", t.getMessage());
-                                            callbackContext.error(errorJSONObject);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                            callbackContext.error(e.getMessage());
+                        if (UMShareAPI.get(mActivity).isInstall(mActivity, share_media)) {
+                            new ShareAction(mActivity).setPlatform(share_media)
+                                    .withMedia(web)
+                                    .setCallback(new UMShareListener() {
+                                        @Override
+                                        public void onStart(SHARE_MEDIA platform) {
+                                            Log.e(TAG, "platform" + platform + "onStart！");
                                         }
 
-                                    }
-
-                                    @Override
-                                    public void onCancel(SHARE_MEDIA platform) {
-                                        Log.e(TAG, "platform" + platform + "onCancel！");
-                                        JSONObject errorJSONObject = new JSONObject();
-                                        try {
-                                            errorJSONObject.put("status", "失败");
-                                            errorJSONObject.put("msg", "用户取消");
-                                            callbackContext.error(errorJSONObject);
-                                        } catch (JSONException e) {
-                                            e.printStackTrace();
-                                            callbackContext.error(e.getMessage());
+                                        @Override
+                                        public void onResult(SHARE_MEDIA platform) {
+                                            Log.e(TAG, "platform" + platform + "onResult！");
+                                            callbackContext.success("成功");
                                         }
 
-                                    }
-                                })
-                                .share();
+                                        @Override
+                                        public void onError(SHARE_MEDIA platform, Throwable t) {
+                                            Log.e(TAG, "platform" + platform + "onError！");
+                                            if (t != null) {
+                                                Log.d("throw", "throw:" + t.getMessage());
+                                            }
+                                            JSONObject errorJSONObject = new JSONObject();
+                                            try {
+                                                errorJSONObject.put("status", "失败");
+                                                errorJSONObject.put("msg", t.getMessage());
+                                                callbackContext.error(errorJSONObject);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                                callbackContext.error(e.getMessage());
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancel(SHARE_MEDIA platform) {
+                                            Log.e(TAG, "platform" + platform + "onCancel！");
+                                            JSONObject errorJSONObject = new JSONObject();
+                                            try {
+                                                errorJSONObject.put("status", "失败");
+                                                errorJSONObject.put("msg", "用户取消");
+                                                callbackContext.error(errorJSONObject);
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                                callbackContext.error(e.getMessage());
+                                            }
+
+                                        }
+                                    })
+                                    .share();
+                        } else {
+                            callbackContext.error("应用未安装");
+                        }
                     }
                 });
             } catch (JSONException e) {
