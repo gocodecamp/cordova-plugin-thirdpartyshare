@@ -50,6 +50,9 @@ public class UmengSocialPlugin extends CordovaPlugin {
         PlatformConfig.setQQZone(qqId, qqKey);
 
         UMShareAPI.get(mActivity);
+        UMShareConfig config = new UMShareConfig();
+        config.isNeedAuthOnGetUserInfo(true);
+        UMShareAPI.get(mActivity).setShareConfig(config);
     }
 
 
